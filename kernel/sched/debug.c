@@ -10,6 +10,7 @@
 #include <linux/nmi.h>
 #include "sched.h"
 
+#ifndef CONFIG_SCHED_ALT
 /*
  * This allows printing both to /sys/kernel/debug/sched/debug and
  * to the console
@@ -209,6 +210,8 @@ static const struct file_operations sched_scaling_fops = {
 	.release	= single_release,
 };
 
+#endif /* !CONFIG_SCHED_ALT */
+
 #ifdef CONFIG_PREEMPT_DYNAMIC
 
 static ssize_t sched_dynamic_write(struct file *filp, const char __user *ubuf,
@@ -274,6 +277,7 @@ static const struct file_operations sched_dynamic_fops = {
 
 #endif /* CONFIG_PREEMPT_DYNAMIC */
 
+#ifndef CONFIG_SCHED_ALT
 __read_mostly bool sched_debug_verbose;
 
 static struct dentry           *sd_dentry;
@@ -324,6 +328,7 @@ static const struct file_operations sched_debug_fops = {
 	.llseek		= seq_lseek,
 	.release	= seq_release,
 };
+#endif /* !CONFIG_SCHED_ALT */
 
 enum dl_param {
 	DL_RUNTIME = 0,
@@ -596,8 +601,11 @@ static __init int sched_init_debug(void)
 
 	debugfs_sched = debugfs_create_dir("sched", NULL);
 
+#ifndef CONFIG_SCHED_ALT
 	debugfs_create_file("features", 0644, debugfs_sched, NULL, &sched_feat_fops);
 	debugfs_create_file_unsafe("verbose", 0644, debugfs_sched, &sched_debug_verbose, &sched_verbose_fops);
+	debugfs_create_bool("verbose", 0644, debugfs_sched, &sched_debug_verbose);
+#endif /* !CONFIG_SCHED_ALT */
 #ifdef CONFIG_PREEMPT_DYNAMIC
 	debugfs_create_file("preempt", 0644, debugfs_sched, NULL, &sched_dynamic_fops);
 #endif
@@ -627,6 +635,7 @@ static __init int sched_init_debug(void)
 #endif /* CONFIG_NUMA_BALANCING */
 
 	debugfs_create_file("debug", 0444, debugfs_sched, NULL, &sched_debug_fops);
+#endif /* !CONFIG_SCHED_ALT */
 
 	debugfs_fair_server_init();
 #ifdef CONFIG_SCHED_CLASS_EXT
@@ -636,6 +645,8 @@ static __init int sched_init_debug(void)
 	return 0;
 }
 late_initcall(sched_init_debug);
+
+#ifndef CONFIG_SCHED_ALT
 
 static cpumask_var_t		sd_sysctl_cpus;
 
@@ -1390,3 +1401,4 @@ void resched_latency_warn(int cpu, u64 latency)
 	       cpu, latency, cpu_rq(cpu)->ticks_without_resched);
 	dump_stack();
 }
+#endif /* !CONFIG_SCHED_ALT */
