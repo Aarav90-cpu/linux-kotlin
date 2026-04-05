@@ -512,7 +512,7 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
 #endif
 }
 
-static inline void update_rq_clock(struct rq *rq)
+static __always_inline void update_rq_clock(struct rq *rq)
 {
 	s64 delta = sched_clock_cpu(cpu_of(rq)) - rq->clock;
 
