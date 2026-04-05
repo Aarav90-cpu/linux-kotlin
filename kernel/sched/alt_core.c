@@ -1138,7 +1138,7 @@ static void nohz_csd_func(void *info)
 
 #endif /* CONFIG_NO_HZ_COMMON */
 
-static inline void wakeup_preempt(struct rq *rq)
+static __always_inline void wakeup_preempt(struct rq *rq)
 {
 	if (sched_rq_first_task(rq) != rq->curr)
 		resched_curr(rq);
