@@ -3858,7 +3858,7 @@ DEFINE_PER_CPU(struct kernel_cpustat, kernel_cpustat);
 EXPORT_PER_CPU_SYMBOL(kstat);
 EXPORT_PER_CPU_SYMBOL(kernel_cpustat);
 
-static inline void update_curr(struct rq *rq, struct task_struct *p)
+static __always_inline void update_curr(struct rq *rq, struct task_struct *p)
 {
 	s64 ns = rq->clock_task - p->last_ran;
 
