@@ -128,6 +128,7 @@ cpumask_t sched_smt_mask ____cacheline_aligned_in_smp;
  * domain, see cpus_share_cache().
  */
 static DEFINE_PER_CPU_READ_MOSTLY(int, sd_llc_id);
+static DEFINE_PER_CPU_READ_MOSTLY(int, sd_llc_size);
 
 DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 
@@ -6238,6 +6239,7 @@ static void sched_init_topology_cpumask_early(void)
 		cpumask_copy(tmp, cpu_possible_mask);
 		per_cpu(sched_cpu_llc_mask, cpu) = tmp;
 		per_cpu(sched_cpu_topo_end_mask, cpu) = ++tmp;
+		per_cpu(sd_llc_size, cpu) = cpumask_weight(cpu_possible_mask);
 	}
 }
 
@@ -6267,6 +6269,7 @@ static void sched_init_topology_cpumask(void)
 		TOPOLOGY_CPUMASK(cluster, topology_cluster_cpumask(cpu), false);
 
 		per_cpu(sd_llc_id, cpu) = cpumask_first(cpu_coregroup_mask(cpu));
+		per_cpu(sd_llc_size, cpu) = cpumask_weight(cpu_coregroup_mask(cpu));
 		per_cpu(sched_cpu_llc_mask, cpu) = topo;
 		TOPOLOGY_CPUMASK(coregroup, cpu_coregroup_mask(cpu), false);
 
