@@ -1939,6 +1939,53 @@ preempt_mask_check(cpumask_t *preempt_mask, const cpumask_t *allow_mask, int pri
 
 DEFINE_STATIC_CALL(sched_idle_select_func, cpumask_and);
 
+static void record_wakee(struct task_struct *p)
+{
+	/*
+	 * Only decay a single time; tasks that have less then 1 wakeup per
+	 * jiffy will not have built up many flips.
+	 */
+	if (time_after(jiffies, current->wakee_flip_decay_ts + HZ)) {
+		current->wakee_flips >>= 1;
+		current->wakee_flip_decay_ts = jiffies;
+	}
+
+	if (current->last_wakee != p) {
+		current->last_wakee = p;
+		current->wakee_flips++;
+	}
+}
+
+/*
+ * Detect M:N waker/wakee relationships via a switching-frequency heuristic.
+ *
+ * A waker of many should wake a different task than the one last awakened
+ * at a frequency roughly N times higher than one of its wakees.
+ *
+ * In order to determine whether we should let the load spread vs consolidating
+ * to shared cache, we look for a minimum 'flip' frequency of llc_size in one
+ * partner, and a factor of lls_size higher frequency in the other.
+ *
+ * With both conditions met, we can be relatively sure that the relationship is
+ * non-monogamous, with partner count exceeding socket size.
+ *
+ * Waker/wakee being client/server, worker/dispatcher, interrupt source or
+ * whatever is irrelevant, spread criteria is apparent partner count exceeds
+ * socket size.
+ */
+static int wake_wide(struct task_struct *p)
+{
+	unsigned int master = current->wakee_flips;
+	unsigned int slave = p->wakee_flips;
+	int factor = __this_cpu_read(sd_llc_size);
+
+	if (master < slave)
+		swap(master, slave);
+	if (slave < factor || master < slave * factor)
+		return 0;
+	return 1;
+}
+
 static int
 wake_affine_idle(int this_cpu, int prev_cpu, int sync)
 {
@@ -1973,13 +2020,18 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
 static inline int select_task_rq(struct task_struct *p, int wake_flags)
 {
 	cpumask_t allow_mask, mask;
+	int this_cpu = smp_processor_id();
 	int prev_cpu = task_cpu(p);
 
 	if (unlikely(!cpumask_and(&allow_mask, p->cpus_ptr, cpu_active_mask)))
 		return select_fallback_rq(prev_cpu, p);
 
-	if ((wake_flags & WF_SYNC) && !(current->flags & PF_EXITING)) {
-		int affine_cpu = wake_affine_idle(smp_processor_id(), prev_cpu, true);
+	if (wake_flags & WF_TTWU)
+		record_wakee(p);
+
+	if ((wake_flags & WF_SYNC) && (wake_flags & WF_TTWU) &&
+	    !(current->flags & PF_EXITING) && !wake_wide(p)) {
+		int affine_cpu = wake_affine_idle(this_cpu, prev_cpu, true);
 
 		if (affine_cpu < nr_cpu_ids &&
 		    cpumask_test_cpu(affine_cpu, &allow_mask))
@@ -2732,6 +2784,8 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 {
 	guard(preempt)();
 	int cpu, success = 0;
+
+	wake_flags |= WF_TTWU;
 
 	if (p == current) {
 		/*
