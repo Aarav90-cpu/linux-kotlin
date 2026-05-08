@@ -2004,6 +2004,13 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
 	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu))
 		return available_idle_cpu(prev_cpu) ? prev_cpu : this_cpu;
 
+	/*
+	 * If the previous CPU is cache affine and idle, don't be stupid.
+	 */
+	if (prev_cpu != this_cpu && cpus_share_cache(this_cpu, prev_cpu) &&
+	    available_idle_cpu(prev_cpu))
+		return prev_cpu;
+
 	if (sync) {
 		struct rq *rq = cpu_rq(this_cpu);
 
