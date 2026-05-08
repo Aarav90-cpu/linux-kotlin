@@ -2019,30 +2019,58 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
 
 static inline int select_task_rq(struct task_struct *p, int wake_flags)
 {
+	int sync = (wake_flags & WF_SYNC) && !(current->flags & PF_EXITING);
 	cpumask_t allow_mask, mask;
-	int this_cpu = smp_processor_id();
+	int cpu = smp_processor_id();
 	int prev_cpu = task_cpu(p);
+	int new_cpu = prev_cpu;
+	int want_affine = 0;
+	bool wakee_migratable = p->nr_cpus_allowed > 1 && !is_migration_disabled(p);
 
-	if (unlikely(!cpumask_and(&allow_mask, p->cpus_ptr, cpu_active_mask)))
-		return select_fallback_rq(prev_cpu, p);
+	/*
+	 * required for stable ->cpus_allowed
+	 */
+	lockdep_assert_held(&p->pi_lock);
+	if (wake_flags & WF_TTWU) {
+		if (wakee_migratable)
+			record_wakee(p);
 
-	if (wake_flags & WF_TTWU)
-		record_wakee(p);
+		if ((wake_flags & WF_CURRENT_CPU) &&
+		    cpumask_test_cpu(cpu, p->cpus_ptr)) {
+			new_cpu = cpu;
+			goto out;
+		}
 
-	if ((wake_flags & WF_SYNC) && (wake_flags & WF_TTWU) &&
-	    !(current->flags & PF_EXITING) && !wake_wide(p)) {
-		int affine_cpu = wake_affine_idle(this_cpu, prev_cpu, true);
+		want_affine = wakee_migratable && !wake_wide(p) &&
+			      cpumask_test_cpu(cpu, p->cpus_ptr);
+	}
+
+	if (unlikely(!cpumask_and(&allow_mask, p->cpus_ptr, cpu_active_mask))) {
+		new_cpu = select_fallback_rq(prev_cpu, p);
+		goto out;
+	}
+
+	if (sync && want_affine) {
+		int affine_cpu = wake_affine_idle(cpu, prev_cpu, sync);
 
 		if (affine_cpu < nr_cpu_ids &&
-		    cpumask_test_cpu(affine_cpu, &allow_mask))
-			return affine_cpu;
+		    cpumask_test_cpu(affine_cpu, &allow_mask)) {
+			new_cpu = affine_cpu;
+			goto out;
+		}
 	}
 
 	if (static_call(sched_idle_select_func)(&mask, &allow_mask, sched_idle_mask)	||
 	    preempt_mask_check(&mask, &allow_mask, task_sched_prio(p)))
-		return best_mask_cpu(prev_cpu, &mask);
+		new_cpu = best_mask_cpu(prev_cpu, &mask);
+	else
+		new_cpu = best_mask_cpu(prev_cpu, &allow_mask);
 
-	return best_mask_cpu(prev_cpu, &allow_mask);
+out:
+	if (unlikely(!is_cpu_allowed(p, new_cpu)))
+		new_cpu = select_fallback_rq(prev_cpu, p);
+
+	return new_cpu;
 }
 
 void sched_set_stop_task(int cpu, struct task_struct *stop)
@@ -2915,11 +2943,7 @@ int try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 
 		sched_task_ttwu(p);
 
-		if ((wake_flags & WF_CURRENT_CPU) &&
-		    cpumask_test_cpu(smp_processor_id(), p->cpus_ptr))
-			cpu = smp_processor_id();
-		else
-			cpu = select_task_rq(p, wake_flags);
+		cpu = select_task_rq(p, wake_flags);
 
 		if (cpu != task_cpu(p)) {
 			if (p->in_iowait) {
